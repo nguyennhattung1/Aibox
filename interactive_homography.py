@@ -246,10 +246,14 @@ def run_interactive_ui(video_path: str, output_dir: str = "outputs"):
 
 if __name__ == "__main__":
     video_sample = "Videos/C01 South First Indoor 02.mp4"
+    output_sample = "outputs"
+
     if len(sys.argv) > 1:
         video_sample = sys.argv[1]
+    if len(sys.argv) > 2:
+        output_sample = sys.argv[2]
 
     if os.path.exists(video_sample):
-        run_interactive_ui(video_sample)
+        run_interactive_ui(video_sample, output_sample)
     else:
         print(f"[SKIP] Video file not found: {video_sample}")

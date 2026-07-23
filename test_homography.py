@@ -179,17 +179,24 @@ def run_homography_demo(video_path: str, output_dir: str = "outputs"):
                 cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 255), 2)
     cv2.putText(floorplan_warped, "2D Bird's-Eye Floorplan", (10, 30),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
-
     side_by_side = np.hstack([cam_resized, floorplan_warped])
 
-    out_file = output_dir / "test_homography_result.png"
+    out_file = output_dir / f"{video_path.stem}_test_homography.png"
     cv2.imwrite(str(out_file), side_by_side)
-    print(f"  [SUCCESS] Demo result saved → {out_file}\n")
+    print(f"  [SUCCESS] Test result saved → {out_file}\n")
 
 
 if __name__ == "__main__":
+    import sys
     video_sample = "Videos/C01 South First Indoor 02.mp4"
+    output_sample = "outputs"
+
+    if len(sys.argv) > 1:
+        video_sample = sys.argv[1]
+    if len(sys.argv) > 2:
+        output_sample = sys.argv[2]
+
     if os.path.exists(video_sample):
-        run_homography_demo(video_sample)
+        run_homography_demo(video_sample, output_sample)
     else:
-        print(f"[SKIP] Video not found: {video_sample}")
+        print(f"[SKIP] Video file not found: {video_sample}")
