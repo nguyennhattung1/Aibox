@@ -182,6 +182,7 @@ if __name__ == "__main__":
     parser.add_argument("--output", default="outputs",
                         help="Output directory (default: outputs/)")
     args = parser.parse_args()
+    # Command for run: python track_heatmap.py --videos "Videos/quan_cafe_cam1.mp4" --output "ket_qua"
 
     for vp in args.videos:
         if not os.path.isfile(vp):
