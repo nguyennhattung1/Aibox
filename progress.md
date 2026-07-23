@@ -9,13 +9,13 @@ Tài liệu này tổng hợp trạng thái và tiến độ thực tế của d
 | Chỉ số | Trạng thái |
 | :--- | :---: |
 | **Tổng số công việc** | **15** |
-| **Hoàn thành** | **1** (6.7%) |
+| **Hoàn thành** | **5** (33.3%) |
 | **Đang tiến hành** | **1** (6.7%) |
-| **Chưa bắt đầu** | **13** (86.6%) |
+| **Chưa bắt đầu** | **9** (60.0%) |
 | **Tổng số ngày dự kiến** | **38 ngày** |
 
 ### 📈 Biểu đồ tiến độ
-`██░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░` (6.7% Hoàn thành)
+`██████████░░░░░░░░░░░░░░░░░░░░░░` (33.3% Hoàn thành)
 
 ---
 
@@ -27,11 +27,11 @@ Tài liệu này tổng hợp trạng thái và tiến độ thực tế của d
 | ID | Tên công việc | Mô tả chi tiết / Yêu cầu kỹ thuật | Ngày dự kiến | Trạng thái | Ghi chú |
 | :--- | :--- | :--- | :---: | :---: | :--- |
 | **1.1** | Cài đặt môi trường | Cài đặt Python, PyTorch (hỗ trợ MPS cho Apple Silicon) và thư viện Ultralytics. | 1 | **Hoàn thành** ✅ | Đã khởi tạo Conda `aibox` thành công. |
-| **1.2** | Detection & Tracking | Đọc video quán cafe. Chạy model yolov8n.pt (hoặc bản s) kết hợp thuật toán ByteTrack. | 2 | **Đang tiến hành** 🔄 | |
-| **1.3** | Trích xuất tọa độ gót chân | Xử lý bounding box để lấy vị trí chạm đất: $X = (x_{min} + x_{max})/2, Y = y_{max}$. | 1 | **Chưa bắt đầu** ⏳ | |
-| **1.4** | Tích lũy ma trận 2D theo ngày | Tạo ma trận 2D bằng kích thước khung hình. Cộng +1 vào ô $(X, Y)$ mỗi khi có người xuất hiện. | 1 | **Chưa bắt đầu** ⏳ | |
-| **1.5** | Render Heatmap | Dùng `cv2.applyColorMap` hoặc bộ lọc KDE làm mượt mây nhiệt. Đè lớp ảnh lên video gốc (alpha blend). | 2 | **Chưa bắt đầu** ⏳ | |
-| **1.6** | Demo với 1 camera thực tế | Kết nối luồng RTSP từ camera thật, đánh giá độ chính xác và FPS của toàn bộ pipeline Phase 1. | 2 | **Chưa bắt đầu** ⏳ | Cột mốc báo cáo kết quả Phase 1 |
+| **1.2** | Detection & Tracking | Đọc video quán cafe. Chạy model yolov8n.pt (hoặc bản s) kết hợp thuật toán ByteTrack. | 2 | **Hoàn thành** ✅ | Đã chạy thành công YOLOv8n + ByteTrack trong `track_heatmap.py`. |
+| **1.3** | Trích xuất tọa độ gót chân | Xử lý bounding box để lấy vị trí chạm đất: $X = (x_{min} + x_{max})/2, Y = y_{max}$. | 1 | **Hoàn thành** ✅ | Đã trích xuất điểm chân $X_{center}, Y_{max}$ để làm điểm neo vị trí. |
+| **1.4** | Tích lũy ma trận 2D theo ngày | Tạo ma trận 2D bằng kích thước khung hình. Cộng +1 vào ô $(X, Y)$ mỗi khi có người xuất hiện. | 1 | **Hoàn thành** ✅ | Ma trận mật độ 2D `density` tích lũy chính xác từng frame. |
+| **1.5** | Render Heatmap | Dùng `cv2.applyColorMap` hoặc bộ lọc KDE làm mượt mây nhiệt. Đè lớp ảnh lên video gốc (alpha blend). | 2 | **Hoàn thành** ✅ | Tích hợp Gaussian Filter + colormap `INFERNO` + xuất video & ảnh PNG. |
+| **1.6** | Demo với 1 camera thực tế | Kết nối luồng RTSP từ camera thật, đánh giá độ chính xác và FPS của toàn bộ pipeline Phase 1. | 2 | **Đang tiến hành** 🔄 | Cột mốc báo cáo kết quả Phase 1 |
 
 ---
 
