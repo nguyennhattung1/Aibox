@@ -1,0 +1,27 @@
+# Operating System
+.DS_Store
+Thumbs.db
+.~*
+
+# Python & Environment
+__pycache__/
+*.pyc
+.env
+.venv/
+
+# Large Model Weights
+*.pt
+*.pth
+*.onnx
+*.engine
+*.bin
+
+# Heavy Videos & Rendered Outputs (keep repo lightweight)
+Videos/*.mp4
+Videos/*.avi
+Videos/*.mov
+Videos/*.mkv
+outputs/*.mp4
+outputs/*.avi
+outputs/*.mov
+outputs/*.mkv
