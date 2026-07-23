@@ -40,6 +40,7 @@ def mouse_callback(event, x, y, flags, param):
 
 def compute_homography_matrix(src_pts: np.ndarray, dst_pts: np.ndarray) -> np.ndarray:
     """Computes 3x3 Homography Matrix H."""
+    #cv2.getPerspectiveTransform thư viện tính bird-eye-floorplan
     return cv2.getPerspectiveTransform(np.float32(src_pts), np.float32(dst_pts))
 
 
