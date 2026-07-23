@@ -40,7 +40,7 @@ Tài liệu này tổng hợp trạng thái và tiến độ thực tế của d
 
 | ID | Tên công việc | Mô tả chi tiết / Yêu cầu kỹ thuật | Ngày dự kiến | Trạng thái | Ghi chú |
 | :--- | :--- | :--- | :---: | :---: | :--- |
-| **2.1** | Perspective Transformation (Homography) | Ánh xạ tọa độ khách từ góc camera chéo xuống bản đồ mặt bằng 2D (Floorplan) từ trên xuống. | 3 | **Chưa bắt đầu** ⏳ | Chuẩn bị giao diện cho người quản lý |
+| **2.1** | Perspective Transformation (Homography) | Ánh xạ tọa độ khách từ góc camera chéo xuống bản đồ mặt bằng 2D (Floorplan) từ trên xuống. | 3 | **Đang tiến hành** 🔄 | Chuẩn bị giao diện cho người quản lý |
 | **2.2** | Phân tích thời gian lưu lại (Dwell Time) | Đo lường thời gian tồn tại của các ID để phân biệt khách take-away và khách ngồi làm việc. | 3 | **Chưa bắt đầu** ⏳ | |
 | **2.3** | Đóng gói Pipeline | Tối ưu hóa mã nguồn thành các module độc lập, dọn dẹp code để chuẩn bị chuyển sang môi trường nhúng. | 2 | **Chưa bắt đầu** ⏳ | |
 
