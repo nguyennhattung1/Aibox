@@ -234,6 +234,9 @@ def run_pipeline(video_path: str, output_dir: str):
     print(H_matrix)
     print()
 
+    # ROI contour dùng cho pointPolygonTest (lọc foot-point)
+    roi_contour = src_pts.astype(np.int32).reshape((-1, 1, 2))
+
     floorplan_bg      = cv2.warpPerspective(first_frame, H_matrix, (W_FLOOR, H_FLOOR))
     floorplan_bg_dark = (floorplan_bg * 0.35).astype(np.uint8)
 
@@ -288,6 +291,11 @@ def run_pipeline(video_path: str, output_dir: str):
                 fx  = (x1 + x2) // 2
                 fy  = min(y2, H_cam - 1)
 
+                # ── Lọc: chỉ xử lý nếu foot-point nằm trong ROI polygon ────
+                inside = cv2.pointPolygonTest(roi_contour, (float(fx), float(fy)), measureDist=False)
+                if inside < 0:
+                    continue  # foot-point ngoài ROI → ẩn hoàn toàn
+
                 foot_pts_cam.append([fx, fy])
                 track_ids.append(tid)
 
@@ -296,6 +304,15 @@ def run_pipeline(video_path: str, output_dir: str):
                 cv2.putText(cam_annotated, f"ID:{tid}", (x1, y1 - 6),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.55, color, 2)
                 cv2.circle(cam_annotated, (fx, fy), 5, color, -1)
+
+        # ── Vẽ khung vàng ROI cố định lên mỗi frame camera ────────────────
+        cv2.polylines(cam_annotated, [roi_contour], isClosed=True,
+                      color=(0, 220, 220), thickness=2)
+        # Vẽ 4 điểm góc
+        corner_labels = ["TL", "TR", "BR", "BL"]
+        corner_colors = [(255, 80, 80), (80, 255, 80), (80, 80, 255), (255, 255, 80)]
+        for idx, pt in enumerate(src_pts.astype(np.int32)):
+            cv2.circle(cam_annotated, tuple(pt), 6, corner_colors[idx], -1)
 
         n_people = len(track_ids)
         floorplan_frame = floorplan_bg_dark.copy()
