@@ -8,14 +8,14 @@ Tài liệu này tổng hợp trạng thái và tiến độ thực tế của d
 
 | Chỉ số | Trạng thái |
 | :--- | :---: |
-| **Tổng số công việc** | **15** |
-| **Hoàn thành** | **5** (33.3%) |
-| **Đang tiến hành** | **1** (6.7%) |
-| **Chưa bắt đầu** | **9** (60.0%) |
-| **Tổng số ngày dự kiến** | **38 ngày** |
+| **Tổng số công việc** | **16** |
+| **Hoàn thành** | **7** (43.8%) |
+| **Đang tiến hành** | **0** (0.0%) |
+| **Chưa bắt đầu** | **9** (56.3%) |
+| **Tổng số ngày dự kiến** | **40 ngày** |
 
 ### 📈 Biểu đồ tiến độ
-`██████████░░░░░░░░░░░░░░░░░░░░░░` (33.3% Hoàn thành)
+`██████████████░░░░░░░░░░░░░░░░░░` (43.8% Hoàn thành)
 
 ---
 
@@ -40,7 +40,8 @@ Tài liệu này tổng hợp trạng thái và tiến độ thực tế của d
 
 | ID | Tên công việc | Mô tả chi tiết / Yêu cầu kỹ thuật | Ngày dự kiến | Trạng thái | Ghi chú |
 | :--- | :--- | :--- | :---: | :---: | :--- |
-| **2.1** | Perspective Transformation (Homography) | Ánh xạ tọa độ khách từ góc camera chéo xuống bản đồ mặt bằng 2D (Floorplan) từ trên xuống. | 3 | **Đang tiến hành** 🔄 | Chuẩn bị giao diện cho người quản lý |
+| **2.1** | Perspective Transformation (Homography) | Ánh xạ tọa độ khách từ góc camera chéo xuống bản đồ mặt bằng 2D (Floorplan) từ trên xuống (thực nghiệm trên 1 ảnh). | 3 | **Hoàn thành** ✅ | Chuẩn bị giao diện cho người quản lý |
+| **2.1b** | Homography trên Full Video | Ánh xạ tọa độ và tích lũy / render Heatmap 2D trực tiếp trên bản đồ mặt bằng (Floorplan) cho toàn bộ video luồng. | 2 | **Hoàn thành** ✅ | `homography_video_heatmap.py` – interactive ROI + side-by-side output |
 | **2.2** | Phân tích thời gian lưu lại (Dwell Time) | Đo lường thời gian tồn tại của các ID để phân biệt khách take-away và khách ngồi làm việc. | 3 | **Chưa bắt đầu** ⏳ | |
 | **2.3** | Đóng gói Pipeline | Tối ưu hóa mã nguồn thành các module độc lập, dọn dẹp code để chuẩn bị chuyển sang môi trường nhúng. | 2 | **Chưa bắt đầu** ⏳ | |
 
