@@ -36,9 +36,11 @@ MODEL_NAME    = "yolov8n.pt"
 PERSON_CLASS  = 0
 CONF_THRESH   = 0.35
 IOU_THRESH    = 0.45
-HEATMAP_ALPHA = 0.65
-SIGMA         = 18
-COLORMAP      = cv2.COLORMAP_INFERNO
+HEATMAP_ALPHA = 0.55          # Tỷ lệ hòa trộn vừa phải giúp nền floorplan rõ nét
+SIGMA         = 10            # Giảm sigma từ 18 -> 10 giúp mây nhiệt sắc nét, bớt thô
+COLORMAP      = cv2.COLORMAP_JET # Chuyển sang JET cho dải màu tương phản và sắc nét hơn
+SPLASH_RADIUS = 3             # Bán kính tích lũy điểm chân gọn gàng (3px thay vì 8px)
+MIN_THRESHOLD = 15            # Ngưỡng lọc nhiễu nền (chỉ hiển thị vùng có mật độ đáng kể)
 
 VIDEO_DIR     = Path("Videos")
 W_FLOOR       = 600
@@ -324,8 +326,8 @@ def run_pipeline(video_path: str, output_dir: str):
             for (xf, yf), tid in zip(pts_floor_arr, track_ids):
                 xi, yi = int(xf), int(yf)
                 if 0 <= xi < W_FLOOR and 0 <= yi < H_FLOOR:
-                    yr0, yr1 = max(yi - 8, 0), min(yi + 9, H_FLOOR)
-                    xr0, xr1 = max(xi - 8, 0), min(xi + 9, W_FLOOR)
+                    yr0, yr1 = max(yi - SPLASH_RADIUS, 0), min(yi + SPLASH_RADIUS + 1, H_FLOOR)
+                    xr0, xr1 = max(xi - SPLASH_RADIUS, 0), min(xi + SPLASH_RADIUS + 1, W_FLOOR)
                     density_floor[yr0:yr1, xr0:xr1] += 1.0
 
                     color = get_id_color(tid, id_palette, rng)
@@ -336,7 +338,7 @@ def run_pipeline(video_path: str, output_dir: str):
         if smooth.max() > 0:
             norm       = (smooth / smooth.max() * 255).astype(np.uint8)
             heat_color = cv2.applyColorMap(norm, COLORMAP)
-            mask       = (norm > 8).astype(np.float32)[..., np.newaxis]
+            mask       = (norm > MIN_THRESHOLD).astype(np.float32)[..., np.newaxis]
             floorplan_frame = (
                 floorplan_frame * (1 - mask * HEATMAP_ALPHA)
                 + heat_color * mask * HEATMAP_ALPHA
@@ -370,7 +372,7 @@ def run_pipeline(video_path: str, output_dir: str):
     if smooth_final.max() > 0:
         norm_final = (smooth_final / smooth_final.max() * 255).astype(np.uint8)
         heat_final = cv2.applyColorMap(norm_final, COLORMAP)
-        mask_f     = (norm_final > 8).astype(np.float32)[..., np.newaxis]
+        mask_f     = (norm_final > MIN_THRESHOLD).astype(np.float32)[..., np.newaxis]
         final_img  = (
             floorplan_bg_dark * (1 - mask_f * HEATMAP_ALPHA)
             + heat_final * mask_f * HEATMAP_ALPHA

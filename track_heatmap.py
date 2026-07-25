@@ -21,13 +21,15 @@ from ultralytics import YOLO
 # ─────────────────────────────────────────────
 # CONFIG
 # ─────────────────────────────────────────────
-MODEL_NAME   = "yolov8n.pt"      # change to yolov8s.pt for higher accuracy
-PERSON_CLASS = 0                  # COCO class index for 'person'
-CONF_THRESH  = 0.35               # minimum detection confidence
-IOU_THRESH   = 0.45               # NMS IOU threshold
-HEATMAP_ALPHA = 0.55              # overlay blend ratio  (0=only raw, 1=only heatmap)
-SIGMA        = 20                 # Gaussian blur sigma for heatmap smoothing
-COLORMAP     = cv2.COLORMAP_INFERNO
+MODEL_NAME    = "yolov8n.pt"      # change to yolov8s.pt for higher accuracy
+PERSON_CLASS  = 0                  # COCO class index for 'person'
+CONF_THRESH   = 0.35               # minimum detection confidence
+IOU_THRESH    = 0.45               # NMS IOU threshold
+HEATMAP_ALPHA = 0.55               # overlay blend ratio  (0=only raw, 1=only heatmap)
+SIGMA         = 10                 # Gaussian blur sigma gọn nét (thay vì 20)
+COLORMAP      = cv2.COLORMAP_JET   # Chuyển sang JET cho màu tương phản & sắc nét
+SPLASH_RADIUS = 3                  # Bán kính tích lũy điểm chân gọn gàng (3px)
+MIN_THRESHOLD = 15                 # Ngưỡng lọc nhiễu nền
 
 
 def run_pipeline(video_path: str, output_dir: str):
@@ -117,8 +119,8 @@ def run_pipeline(video_path: str, output_dir: str):
                 fy = min(y2, H - 1)
 
                 # Accumulate a small Gaussian splash at foot point
-                yr0, yr1 = max(fy - 8, 0), min(fy + 9, H)
-                xr0, xr1 = max(fx - 8, 0), min(fx + 9, W)
+                yr0, yr1 = max(fy - SPLASH_RADIUS, 0), min(fy + SPLASH_RADIUS + 1, H)
+                xr0, xr1 = max(fx - SPLASH_RADIUS, 0), min(fx + SPLASH_RADIUS + 1, W)
                 density[yr0:yr1, xr0:xr1] += 1.0
 
                 # Draw bounding box + ID label
@@ -136,8 +138,8 @@ def run_pipeline(video_path: str, output_dir: str):
         if smooth.max() > 0:
             norm = (smooth / smooth.max() * 255).astype(np.uint8)
             heat_color = cv2.applyColorMap(norm, COLORMAP)
-            # Mask: only show where density > tiny threshold to keep background clean
-            mask = (norm > 8).astype(np.float32)[..., np.newaxis]
+            # Mask: only show where density > threshold to keep background clean
+            mask = (norm > MIN_THRESHOLD).astype(np.float32)[..., np.newaxis]
             annotated = (annotated * (1 - mask * HEATMAP_ALPHA)
                          + heat_color * mask * HEATMAP_ALPHA).astype(np.uint8)
 
