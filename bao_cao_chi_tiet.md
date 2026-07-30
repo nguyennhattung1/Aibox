@@ -12,6 +12,7 @@ Hệ thống cung cấp giải pháp phân tích mật độ di chuyển (Heatma
 * **Foot-point Extraction**: Trích xuất tọa độ gót chân (chạm đất) $X_{center}, Y_{max}$ làm điểm mốc thực tế thay vì trung tâm bounding box.
 * **Homography (Perspective Transformation)**: Chuyển đổi tọa độ từ góc quay chéo của Camera sang bản đồ mặt bằng 2D nhìn từ trên xuống (Bird's-Eye View).
 * **2D Floorplan Heatmap**: Tích lũy mật độ di chuyển trực tiếp trên Floorplan qua toàn bộ luồng Video thực tế.
+* **RTSP Camera Stream Integration (Task 1.6)**: Kết nối trực tiếp luồng camera IP/RTSP thời gian thực qua giao thức TCP, tự động đo đạc latency, FPS và xuất báo cáo đánh giá hiệu năng Pipeline Phase 1.
 
 ---
 
@@ -112,6 +113,36 @@ python homography_video_heatmap.py --video "Videos/CCTV Indoor Lobby 01.mp4" --o
 
 ---
 
+### 🟢 File 5: `rtsp_pipeline_demo.py` *(Task 1.6 - Camera RTSP Demo & Benchmark)*
+* **Mục đích**: Kết nối luồng RTSP camera IP thực tế, chạy toàn bộ Pipeline Phase 1 (Detection + ByteTrack + Heel Extraction + Live Heatmap) và xuất báo cáo đo đạc hiệu năng FPS / Latency chi tiết.
+* **Đầu ra (mặc định lưu tại thư mục `temp/`)**:
+  * Video đã tracking & đè heatmap: `temp/rtsp_phase1_demo_<timestamp>.mp4`.
+  * Ảnh Heatmap mật độ đơn lẻ: `temp/rtsp_phase1_heatmap_<timestamp>.png`.
+  * Ảnh Báo cáo Tổng kết Dashboard: `temp/rtsp_phase1_summary_<timestamp>.png`.
+
+#### 💻 Cách chạy:
+```bash
+# 1. Chạy đánh giá Pipeline với camera RTSP mặc định trong 30 giây:
+python rtsp_pipeline_demo.py --duration 30 --output temp
+
+# 2. Chạy với URL camera RTSP tùy chỉnh:
+python rtsp_pipeline_demo.py --rtsp "rtsp://admin:password@192.168.1.21:554/cam/realmonitor?channel=1&subtype=1" --duration 60
+
+# 3. Chạy hiển thị cửa sổ xem trực tiếp GUI:
+python rtsp_pipeline_demo.py --display
+```
+
+#### 📊 Kết quả Benchmark thực tế trên Mac Mini M4 (Camera IMOU Sub-stream 640x480):
+* **Tốc độ đọc luồng RTSP (Stream FPS)**: ~40 - 43 FPS (Rất ổn định qua TCP).
+* **Tốc độ xử lý Pipeline tổng thể**: **8.37 FPS** (~117.9 ms latency/frame).
+* **Phân rã độ trễ (Latency Breakdown)**:
+  * Capture & Video Decode: `0.34 ms`
+  * YOLOv8n + ByteTrack Inference: `100.89 ms`
+  * Gaussian KDE & Heatmap Render: `16.67 ms`
+* **Độ chính xác Tracking**: Nhận diện & theo dõi chính xác 7/7 ID người di chuyển trong góc quay phòng thử nghiệm.
+
+---
+
 ## 3. Cấu Trúc Thư Mục Dự Án
 
 ```
@@ -120,14 +151,18 @@ AI_box/
 │   ├── C01 North First Indoor.mp4
 │   ├── C01 South First Indoor 02.mp4
 │   └── CCTV Indoor Lobby 01.mp4
-├── outputs/                        # Thư mục chứa kết quả xuất ra (Video & PNG)
+├── outputs/                        # Thư mục chứa kết quả xuất chính thức (Video & PNG)
+├── temp/                           # Thư mục chứa các file nháp & báo cáo tạm (được gitignore)
 ├── track_heatmap.py                # Pipeline Phase 1: Detection + Heatmap góc Camera
 ├── test_homography.py              # Test thuật toán Homography
 ├── interactive_homography.py       # UI tương tác chọn 4 điểm ROI
 ├── homography_video_heatmap.py     # Pipeline Phase 2 (Task 2.1b): Full Video 2D Floorplan Heatmap
+├── rtsp_pipeline_demo.py           # Pipeline Phase 1 (Task 1.6): Demo camera RTSP & Benchmark
 ├── progress.md                     # Tài liệu theo dõi tiến độ dự án
 └── bao_cao_chi_tiet.md             # Báo cáo chi tiết & hướng dẫn vận hành này
 ```
 
 ---
-*Tài liệu được cập nhật ngày 24/07/2026.*
+
+*Tài liệu được cập nhật ngày 30/07/2026.*
+
