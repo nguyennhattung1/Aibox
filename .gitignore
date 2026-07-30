@@ -25,3 +25,7 @@ outputs/*.mp4
 outputs/*.avi
 outputs/*.mov
 outputs/*.mkv
+
+# Temporary draft files
+temp/
+

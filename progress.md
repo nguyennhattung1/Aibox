@@ -9,13 +9,13 @@ Tài liệu này tổng hợp trạng thái và tiến độ thực tế của d
 | Chỉ số | Trạng thái |
 | :--- | :---: |
 | **Tổng số công việc** | **16** |
-| **Hoàn thành** | **7** (43.8%) |
+| **Hoàn thành** | **8** (50.0%) |
 | **Đang tiến hành** | **0** (0.0%) |
-| **Chưa bắt đầu** | **9** (56.3%) |
+| **Chưa bắt đầu** | **8** (50.0%) |
 | **Tổng số ngày dự kiến** | **40 ngày** |
 
 ### 📈 Biểu đồ tiến độ
-`██████████████░░░░░░░░░░░░░░░░░░` (43.8% Hoàn thành)
+`████████████████░░░░░░░░░░░░░░░░` (50.0% Hoàn thành)
 
 ---
 
@@ -31,7 +31,7 @@ Tài liệu này tổng hợp trạng thái và tiến độ thực tế của d
 | **1.3** | Trích xuất tọa độ gót chân | Xử lý bounding box để lấy vị trí chạm đất: $X = (x_{min} + x_{max})/2, Y = y_{max}$. | 1 | **Hoàn thành** ✅ | Đã trích xuất điểm chân $X_{center}, Y_{max}$ để làm điểm neo vị trí. |
 | **1.4** | Tích lũy ma trận 2D theo ngày | Tạo ma trận 2D bằng kích thước khung hình. Cộng +1 vào ô $(X, Y)$ mỗi khi có người xuất hiện. | 1 | **Hoàn thành** ✅ | Ma trận mật độ 2D `density` tích lũy chính xác từng frame. |
 | **1.5** | Render Heatmap | Dùng `cv2.applyColorMap` hoặc bộ lọc KDE làm mượt mây nhiệt. Đè lớp ảnh lên video gốc (alpha blend). | 2 | **Hoàn thành** ✅ | Tích hợp Gaussian Filter + colormap `INFERNO` + xuất video & ảnh PNG. |
-| **1.6** | Demo với 1 camera thực tế | Kết nối luồng RTSP từ camera thật, đánh giá độ chính xác và FPS của toàn bộ pipeline Phase 1. | 2 | **Đang tiến hành** 🔄 | Cột mốc báo cáo kết quả Phase 1 |
+| **1.6** | Demo với 1 camera thực tế | Kết nối luồng RTSP từ camera thật, đánh giá độ chính xác và FPS của toàn bộ pipeline Phase 1. | 2 | **Hoàn thành** ✅ | `rtsp_pipeline_demo.py` – Đã đánh giá pipeline thực tế trên camera IMOU |
 
 ---
 
